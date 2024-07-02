@@ -1,6 +1,7 @@
 const core = require("@actions/core");
 const toolCache = require("@actions/tool-cache");
 const path = require("path");
+const axios = require('axios');
 
 const { restoreRPCCache } = require("./cache");
 const { getDownloadObject } = require("./utils");
@@ -25,7 +26,7 @@ async function validateSubscription() {
 async function main() {
   try {
     await validateSubscription();
-    
+
     // Get version input
     const version = core.getInput("version");
 
