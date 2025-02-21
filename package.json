@@ -17,7 +17,7 @@
     "build": "ncc build src/index.js -o dist --source-map && ncc build src/save.js -o dist/save --source-map"
   },
   "dependencies": {
-    "@actions/cache": "^3.1.2",
+    "@actions/cache": "^4.0.1",
     "@actions/core": "^1.8.0",
     "axios": "^1.7.4",
     "@actions/github": "^5.1.1",
