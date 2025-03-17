@@ -15,7 +15,7 @@ jobs:
     name: Foundry project
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
 
@@ -31,12 +31,12 @@ jobs:
 
 ### Inputs
 
-| **Name**             | **Required** | **Default**                           | **Description**                                                                                              | **Type** |
-| -------------------- | ------------ | ------------------------------------- | ------------------------------------------------------------------------------------------------------------ | -------- |
-| `cache`              | No           | `true`                                | Whether to cache RPC responses or not.                                                                       | bool     |
-| `version`            | No           | `nightly`                             | Version to install, e.g. `nightly` or `1.0.0`. **Note:** Foundry only has nightly builds for the time being. | string   |
-| `cache-key`          | No           | `${{ github.job }}-${{ github.sha }}` | The cache key to use for caching.                                                                            | string   |
-| `cache-restore-keys` | No           | `[${{ github.job }}-]`                | The cache keys to use for restoring the cache.                                                               | string[] |
+| **Name**             | **Required** | **Default**                           | **Description**                                                 | **Type** |
+| -------------------- | ------------ | ------------------------------------- | --------------------------------------------------------------- | -------- |
+| `cache`              | No           | `true`                                | Whether to cache RPC responses or not.                          | bool     |
+| `version`            | No           | `stable`                              | Version to install, e.g. `stable`, `rc`, `nightly` or `v0.3.0`. | string   |
+| `cache-key`          | No           | `${{ github.job }}-${{ github.sha }}` | The cache key to use for caching.                               | string   |
+| `cache-restore-keys` | No           | `[${{ github.job }}-]`                | The cache keys to use for restoring the cache.                  | string[] |
 
 ### RPC Caching
 
