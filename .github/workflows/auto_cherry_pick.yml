@@ -7,6 +7,14 @@ on:
         description: "Base branch to create the PR against"
         required: true
         default: "main"
+      mode:
+        description: "Run mode: cherry-pick or verify"
+        required: false
+        default: "cherry-pick"
+
+  pull_request:
+    types: [opened, synchronize, labeled]
+
 
 permissions:
   contents: write
@@ -15,9 +23,11 @@ permissions:
   issues: write
 
 jobs:
-  audit-fix:
-    uses: step-security/reusable-workflows/.github/workflows/auto_cherry_pick.yaml@upstream-Changes-CherryPick
+  cherry-pick:
+    if: github.event_name == 'workflow_dispatch' || contains(fromJson(toJson(github.event.pull_request.labels)).*.name, 'review-required')
+    uses: step-security/reusable-workflows/.github/workflows/auto_cherry_pick.yaml@fix_Verify_cherry_pick-Logic
     with:
       original-owner: "foundry-rs"
       repo-name: "foundry-toolchain"
       base_branch: ${{ inputs.base_branch }}
+      mode: ${{ github.event_name == 'pull_request' && 'verify' || inputs.mode }}
