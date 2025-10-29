@@ -20,7 +20,7 @@ concurrency:
 
 jobs:
   test:
-    runs-on: ${{ matrix.config.os }}
+    runs-on: ${{ github.actor == 'dependabot[bot]' && fromJSON('["ubuntu-latest"]') || fromJSON('matrix.config.os') }}
     strategy:
       matrix:
         # Note: GitHub does not host Alpine runners, so we skip testing there for now.
