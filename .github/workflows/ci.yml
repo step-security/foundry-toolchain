@@ -21,6 +21,7 @@ concurrency:
 jobs:
   test:
     runs-on: ${{ matrix.config.os }}
+    fail-fast: false
     strategy:
       matrix:
         # Note: GitHub does not host Alpine runners, so we skip testing there for now.
@@ -28,13 +29,21 @@ jobs:
           && fromJSON('[{"os":"ubuntu-latest","arch":"x64"}]') || fromJSON('[{"os":"ubuntu-latest","arch":"x64"},{"os":"ubuntu-24.04-arm","arch":"arm64"},{"os":"macos-latest","arch":"arm64"},{"os":"macos-15-intel","arch":"x64"},{"os":"windows-latest","arch":"x64"}]') }}
         version: [stable, nightly]
         network: [ethereum, tempo]
+        include:
+          # Both with and without `v` prefix.
+          - network: ethereum
+            version: 1.5.0
+            config:
+              os: ubuntu-latest
+              arch: x64
+          - network: ethereum
+            version: v1.5.0
+            config:
+              os: ubuntu-latest
+              arch: x64
         exclude:
           - network: tempo
             version: stable
-          - network: tempo
-            config:
-              os: windows-latest
-              arch: x64
     permissions:
       contents: read
     steps:
