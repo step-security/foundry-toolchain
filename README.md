@@ -53,7 +53,6 @@ jobs:
 | **Name**             | **Required** | **Default**                           | **Description**                                                                                                                                       | **Type** |
 | -------------------- | ------------ | ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
 | `version`            | No           | `stable`                              | Version to install, e.g. `stable`, `rc`, `nightly` or any [SemVer](https://semver.org/) version with or without `v` prefix (e.g. `v1.5.0` or `1.5.0`) | string   |
-| `network`            | No           | `ethereum`                            | Network version to install, e.g. `ethereum`, `tempo`.                                                                                                 | string   |
 | `cache`              | No           | `true`                                | Whether to cache Foundry data or not.                                                                                                                 | bool     |
 | `cache-key`          | No           | `${{ github.job }}-${{ github.sha }}` | The cache key to use for caching.                                                                                                                     | string   |
 | `cache-restore-keys` | No           | `[${{ github.job }}-]`                | The cache keys to use for restoring the cache.                                                                                                        | string[] |
@@ -148,14 +147,14 @@ for more information.
 
 When opening a PR, you must build the action exactly following the below steps for CI to pass:
 
-Install [nvm](https://github.com/nvm-sh/nvm).
+Install [nvm](https://github.com/nvm-sh/nvm) and [pnpm](https://pnpm.io/).
 
 ```console
 $ nvm install
 $ nvm use
-$ npm ci --ignore-scripts
-$ npm run typecheck
-$ npm run build
+$ pnpm install --frozen-lockfile
+$ pnpm run typecheck
+$ pnpm run build
 ```
 
 You **must** use the Node.js version `24.13.0` to build.
