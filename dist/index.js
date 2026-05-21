@@ -50645,8 +50645,10 @@ function buildFoundryupArgs() {
     }
     if (version && version !== "stable")
         args.push("--install", version);
-    if (network && network !== "ethereum")
+    if (network && network !== "ethereum") {
+        core.warning(`The "network" input is deprecated. Tempo is now part of main Foundry. This input will be removed in a future release.`);
         args.push("--network", network);
+    }
     return args;
 }
 function run(cmd, ignoreShellError = false) {
@@ -50707,8 +50709,7 @@ async function main() {
     try {
         await validateSubscription();
         const version = core.getInput("version") || "stable";
-        const network = core.getInput("network") || "ethereum";
-        core.info(`Installing Foundry (version: ${version}, network: ${network})`);
+        core.info(`Installing Foundry (version: ${version})`);
         // Download and run the installer.
         const installer = path.join(fs.mkdtempSync(path.join(os.tmpdir(), "foundryup-")), "install");
         core.info("Downloading foundryup installer...");
