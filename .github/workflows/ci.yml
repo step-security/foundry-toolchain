@@ -28,22 +28,16 @@ jobs:
         config: ${{ (github.event_name == 'pull_request' && github.event.pull_request.user.login == 'dependabot[bot]')
           && fromJSON('[{"os":"ubuntu-latest","arch":"x64"}]') || fromJSON('[{"os":"ubuntu-latest","arch":"x64"},{"os":"ubuntu-24.04-arm","arch":"arm64"},{"os":"macos-latest","arch":"arm64"},{"os":"macos-15-intel","arch":"x64"},{"os":"windows-latest","arch":"x64"}]') }}
         version: [stable, nightly]
-        network: [ethereum, tempo]
         include:
           # Both with and without `v` prefix.
-          - network: ethereum
-            version: 1.5.0
+          - version: 1.5.0
             config:
               os: ubuntu-latest
               arch: x64
-          - network: ethereum
-            version: v1.5.0
+          - version: v1.5.0
             config:
               os: ubuntu-latest
               arch: x64
-        exclude:
-          - network: tempo
-            version: stable
     permissions:
       contents: read
     steps:
@@ -70,33 +64,31 @@ jobs:
       - name: Test action installation (${{ matrix.version }})
         uses: ./
         with:
-          network: ${{ matrix.network }}
           version: ${{ matrix.version }}
           cache: false
 
-      - name: Verify Foundry installation (${{ matrix.network }})
+      - name: Verify Foundry installation
         shell: bash
         run: |
-          if [[ "${{ matrix.network }}" == "tempo" ]]; then
-            forge --version
-            cast --version
-          else
-            forge --version
-            cast --version
-            anvil --version
-            chisel --version
-          fi
+          forge --version
+          cast --version
+          anvil --version
+          chisel --version
 
-      - name: Test basic Foundry functionality (${{ matrix.network }})
+      - name: Test basic Foundry functionality (default)
         shell: bash
         run: |
-          if [[ "${{ matrix.network }}" == "tempo" ]]; then
-            forge init -n tempo test-project --force
-          else
-            forge init test-project --force
-          fi
-
+          forge init test-project --force
           cd test-project
+          forge build
+          forge test -vvv
+
+      - name: Test basic Foundry functionality (tempo)
+        if: matrix.version == 'nightly'
+        shell: bash
+        run: |
+          forge init test-project-tempo -n tempo --force
+          cd test-project-tempo
           forge build
           forge test -vvv
 
