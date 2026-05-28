@@ -14,20 +14,22 @@
     "dapptools"
   ],
   "scripts": {
-    "build": "ncc build src/index.ts -o dist --source-map && ncc build src/save.ts -o dist/save --source-map",
+    "build": "ncc build src/index.ts -o dist --source-map --minify && ncc build src/save.ts -o dist/save --source-map --minify",
+    "fmt": "prettier --write .",
+    "fmt:check": "prettier --check .",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@actions/cache": "^4.0.3",
-    "@actions/core": "^1.8.0",
-    "@actions/github": "^6.0.0",
-    "@actions/tool-cache": "^2.0.2",
+    "@actions/cache": "^5.0.3",
+    "@actions/core": "^2.0.2",
+    "@actions/github": "^7.0.0",
+    "@actions/tool-cache": "^3.0.0",
     "axios": "^1.8.2"
   },
   "devDependencies": {
-    "@types/node": "^25.0.9",
-    "@vercel/ncc": "^0.33.1",
-    "prettier": "^3.8.0",
+    "@types/node": "^25.6.0",
+    "@vercel/ncc": "^0.38.4",
+    "prettier": "^3.8.2",
     "typescript": "^5.9.3"
   }
 }
